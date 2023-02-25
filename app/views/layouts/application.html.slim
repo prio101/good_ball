@@ -1,0 +1,32 @@
+doctype html
+html[lang="en"]
+  head
+    meta[charset="utf-8"]
+    meta[http-equiv="X-UA-Compatible" content="IE=edge"]
+    meta[name="viewport" content="width=device-width, initial-scale=1"]
+    title= [ title, 'DockerRails' ].compact.join(' :: ')
+    = csrf_meta_tags
+    = csp_meta_tag
+    = action_cable_meta_tag
+    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    = stylesheet_pack_tag 'application', 'data-turbolinks-track': 'reload'
+
+    - if Rails.env.production? && Rails.configuration.x.plausible_script
+      = javascript_include_tag Rails.configuration.x.plausible_script,
+                               defer: true,
+                               data: { domain: Rails.configuration.x.app_host }
+
+  body data-controller="tooltip icons"
+    = render 'layouts/navbar'
+
+    #main
+      .container
+        - if alert
+          p.alert.alert-danger
+            = alert
+        - if notice
+          p.alert.alert-info
+            = notice
+        = yield
+
+    = render 'layouts/footer'
